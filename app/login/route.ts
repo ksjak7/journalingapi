@@ -1,4 +1,3 @@
-import db from "@/db/db"
 import { userExists } from "@/db/dbfunctions"
 
 type loginRequest = {

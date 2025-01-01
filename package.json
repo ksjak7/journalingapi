@@ -6,7 +6,7 @@
   "target": "ES6",
   "scripts": {
     "dev": "tsx ./db/db.ts && next dev --turbopack",
-    "build": "tsx ./db/db.ts && next build",
+    "build": "next build",
     "start": "tsx ./db/db.ts && next start",
     "lint": "next lint"
   },
