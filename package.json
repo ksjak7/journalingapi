@@ -3,27 +3,30 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "target": "ES6",
   "scripts": {
-    "dev": "node ./db/db.js && next dev --turbopack",
-    "build": "node ./db/db.js && next build",
-    "start": "node ./db/db.js && next start",
+    "dev": "tsx ./db/db.ts && next dev --turbopack",
+    "build": "tsx ./db/db.ts && next build",
+    "start": "tsx ./db/db.ts && next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@types/better-sqlite3": "^7.6.12",
+    "better-sqlite3": "^11.7.0",
     "next": "15.1.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "sqlite3": "^5.1.7"
+    "tsx": "^4.19.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
-    "@types/node": "^20",
+    "@types/node": "^20.17.11",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.1.2",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "typescript": "^5.7.2"
   }
 }
