@@ -2,10 +2,11 @@
   "name": "nextjs",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build",
-    "start": "next start",
+    "dev": "node ./db/db.js && next dev --turbopack",
+    "build": "node ./db/db.js && next build",
+    "start": "node ./db/db.js && next start",
     "lint": "next lint"
   },
   "dependencies": {
