@@ -1,4 +1,5 @@
 import { userExists } from "@/db/dbfunctions"
+import { NextRequest } from "next/server"
 
 type loginRequest = {
   username: string,
@@ -6,8 +7,10 @@ type loginRequest = {
 }
 
 export async function POST(
-  request: Request
+  request: NextRequest
 ) {
+  const origin = request.nextUrl.origin
+  console.log(origin)
   const data: loginRequest = await request.json()
   
   if (userExists(data.username)) {
