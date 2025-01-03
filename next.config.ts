@@ -12,8 +12,12 @@ const nextConfig: NextConfig = {
             value: '*',
           },
           {
+            key: 'Access-Control-Allow-Headers',
+            value: 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
+          },
+          {
             key: 'Access-Control-Allow-Methods',
-            value: 'POST'
+            value: 'POST',
           }
         ]
       }
