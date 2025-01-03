@@ -1,5 +1,5 @@
 import { userExists } from "@/db/dbfunctions"
-import { NextRequest } from "next/server"
+import { NextResponse } from "next/server"
 
 type loginRequest = {
   username: string,
@@ -7,25 +7,28 @@ type loginRequest = {
 }
 
 export async function POST(
-  request: NextRequest
+  request: Request
 ) {
-  const origin = request.nextUrl.origin
-  console.log(origin)
-  const data: loginRequest = await request.json()
   
+  const data: loginRequest = await request.json()
+
   if (userExists(data.username)) {
-    return new Response(
-      JSON.stringify({
-        message: "User Exists"
-      }),
-      { status: 200 }
-    )
+    const response =  NextResponse.json({
+      message: "User Exists",
+      status: 200,
+    })
+    
+    response.headers.set('Access-Control-Allow-Origin', '*')
+
+    return response
   }
 
-  return new Response(
-    JSON.stringify({
-      message: "Login Failed"
-    }),
-    { status: 401 }
-  )
+  const response = NextResponse.json({
+    message: "Login Failed",
+    status: 401
+  })
+
+  response.headers.set('Access-Control-Allow-Origin', '*')
+
+  return response
 }
