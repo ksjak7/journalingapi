@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
   headers: async (): Promise<Header[]> => {
     return [
       {
-        source: '/login',
+        source: '/',
         headers: [
           {
             key: 'Access-Control-Allow-Credentials',
