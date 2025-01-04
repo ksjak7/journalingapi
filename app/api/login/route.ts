@@ -9,26 +9,29 @@ type loginRequest = {
 export async function POST(
   request: Request
 ) {
+  try {
+    const data: loginRequest = await request.json()
   
-  const data: loginRequest = await request.json()
-
-  if (userExists(data.username)) {
-    const response =  NextResponse.json({
-      message: "User Exists",
-      status: 200,
+    if (userExists(data.username)) {
+      const response =  NextResponse.json({
+        message: "User Exists",
+        status: 200,
+      })
+      
+      response.headers.set('Access-Control-Allow-Origin', '*')
+  
+      return response
+    }
+  
+    const response = NextResponse.json({
+      message: "Login Failed",
+      status: 401
     })
-    
+  
     response.headers.set('Access-Control-Allow-Origin', '*')
-
+  
     return response
+  } catch (ex) {
+    console.log(ex)
   }
-
-  const response = NextResponse.json({
-    message: "Login Failed",
-    status: 401
-  })
-
-  response.headers.set('Access-Control-Allow-Origin', '*')
-
-  return response
 }
