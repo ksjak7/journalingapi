@@ -6,6 +6,14 @@ type loginRequest = {
   password: string
 }
 
+export async function OPTIONS () {
+  const response =  NextResponse.json({
+    status: 200,
+  })
+
+  return response
+}
+
 export async function POST(
   request: Request
 ) {
