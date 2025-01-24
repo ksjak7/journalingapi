@@ -11,24 +11,26 @@ export async function POST(
 ) {
   try {
     const data: loginRequest = await request.json()
-  
+
     if (userExists(data.username)) {
-      const response =  NextResponse.json({
-        message: "User Exists",
-      }, {
-        status: 200,
-      })
-      
-      return response
+      return NextResponse.json(
+        {
+          message: "User Exists",
+        },
+        {
+          status: 200,
+        }
+      )
     }
-  
-    const response = NextResponse.json({
-      message: "Login Failed",
-    }, {
-      status: 401,
-    })
-  
-    return response
+
+    return NextResponse.json(
+      {
+        message: "Login Failed",
+      },
+      {
+        status: 401,
+      }
+    )
   } catch (ex) {
     console.log(ex)
   }
