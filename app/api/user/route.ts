@@ -1,3 +1,4 @@
+import { createAccount, updateSession } from "@/db/dbfunctions"
 import { NextRequest, NextResponse } from "next/server"
 
 type MetadataSource = {
@@ -61,13 +62,13 @@ export async function GET(
   )
     .then(data => data.json()) as PeopleMeResponseData
 
-  const accountId = response.resourceName.split("/")[1] || null
+  const accountId = Number.parseInt(response.resourceName.split("/")[1])
   const name = response.names.find(name => name.metadata.primary)?.displayName || null
   const photoUrl = response.photos.find(photo => photo.default)?.url || null
 
-  if (accountId == null
-    || name == null
-    || photoUrl == null) {
+  if (!(accountId
+    && name
+    && photoUrl)) {
     return NextResponse.json(
       {
         message: "invalid data returned from Google api",
@@ -77,17 +78,22 @@ export async function GET(
       }
     )
   }
+
   console.log(JSON.stringify({
     accountId: accountId,
     name: name,
     photoUrl: photoUrl,
   }))
 
+  createAccount(accountId)
+  const sessionToken = updateSession(accountId)
+
   return NextResponse.json(
     {
       accountId: accountId,
       name: name,
       photoUrl: photoUrl,
+      sessionToken: sessionToken,
     },
     {
       status: 200,
