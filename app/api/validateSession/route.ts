@@ -1,30 +1,42 @@
-import { getAccountIdFromSession } from "@/db/dbfunctions"
+import { validateSession } from "@/db/dbfunctions"
 import { NextRequest, NextResponse } from "next/server"
 
 export async function GET(
-  request: NextRequest
+  request: NextRequest,
 ) {
-  const sessionToken: string | null = request.headers.get("SessionToken")
-
+  const sessionToken: string | null = request.headers.get("Authorization")
+  console.log(`ValidateSession :: SessionToken: ${sessionToken}`)
   if (!sessionToken) {
+    console.log(`ValidateSession :: Forbidden`)
     return NextResponse.json(
+      null,
       {
-        accountId: null,
-      },
-      {
-        status: 400,
+        status: 401,
       }
     )
   }
+  
+  const newSessionToken = validateSession(sessionToken!)
 
-  const accountId = getAccountIdFromSession(sessionToken)
+  console.log(`ValidateSession :: newSessionToken: ${newSessionToken}`)
 
-  return NextResponse.json(
-    {
-      accountId: accountId
-    },
-    {
-      status: accountId ? 200 : 401
-    }
-  )
+  if (newSessionToken) {
+    console.log(`ValidateSession :: Success`)
+    return NextResponse.json(
+      {
+        sessionToken: newSessionToken,
+      },
+      {
+        status: 200,
+      }
+    )
+  } else {
+    console.log(`ValidateSession :: Forbidden`)
+    return NextResponse.json(
+      null,
+      {
+        status: 401,
+      }
+    )
+  }
 }

@@ -9,9 +9,10 @@ export function createAccount(accountId: number) {
 }
 
 export function updateSession(accountId: number): string {
-  const expirationDate = new Date()
   const sessionToken: string = randomUUID()
+  const expirationDate = new Date()
   expirationDate.setDate(expirationDate.getDate() + 7)
+
   db.prepare(`
       INSERT OR REPLACE INTO sessions (accountId, expirationDate, sessionToken) 
       VALUES (:accountId, :expirationDate, :sessionToken)
@@ -20,6 +21,7 @@ export function updateSession(accountId: number): string {
       expirationDate: expirationDate.toISOString(),
       sessionToken: sessionToken,
     })
+    
   return sessionToken
 }
 
@@ -27,12 +29,16 @@ interface accountIdResult {
   accountId: number
 }
 
-export function getAccountIdFromSession(sessionToken: string): number | null {
+export function validateSession(sessionToken: string): string | null {
   const data = db.prepare(`SELECT accountId FROM sessions WHERE sessionToken = :sessionToken AND expirationDate > :currentDate`)
     .get({
       sessionToken: sessionToken,
       currentDate: new Date().toISOString()
     }) as accountIdResult | null
 
-  return data ? data.accountId : null
+  if (!data) {
+    return null
+  }
+
+  return updateSession(data.accountId)
 }

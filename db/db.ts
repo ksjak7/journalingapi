@@ -1,3 +1,5 @@
+//make it persistant
+
 import path from 'path'
 import Database from 'better-sqlite3'
 
